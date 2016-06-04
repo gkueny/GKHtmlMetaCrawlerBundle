@@ -13,6 +13,8 @@ class MetaCrawler
     public function getAllMeta($url, $followRedirect = false)
     {
 
+        
+
         $response = $this->getBasicMeta($url, $followRedirect);
 
         if (!$response) return false;

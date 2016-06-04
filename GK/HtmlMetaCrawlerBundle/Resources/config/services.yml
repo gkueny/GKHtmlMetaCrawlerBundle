@@ -1,4 +1,4 @@
 services:
-    gk_html_crawler.meta:
+    gk.html_meta_crawler.meta_crawler:
         class: GK\HtmlMetaCrawlerBundle\Services\MetaCrawler
         public: false
