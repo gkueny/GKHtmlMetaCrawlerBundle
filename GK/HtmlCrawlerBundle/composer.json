@@ -1,0 +1,30 @@
+{
+  "name" : "GK/HtmlCrawlerBundle",
+  "description" : "A simple bundle to get meta tag from url",
+  "type" : "symfony-bundle",
+  "authors" : [{
+    "name" : "gkueny",
+    "email" : "gateankueny@gmail.com"
+  }],
+  "keywords" : [
+    "html crawler bundle"
+  ],
+  "license" : [
+    "MIT"
+  ],
+  "require" : {
+  },
+  "autoload" : {
+    "psr-0" : {
+      "GK\\HtmlCrawlerBundle" : ""
+    }
+  },
+  "target-dir" : "GK/HtmlCrawlerBundle",
+  "repositories" : [{
+  }],
+  "extra" : {
+    "branch-alias" : {
+      "dev-master" : "some_version-dev"
+    }
+  }
+}
