@@ -1,6 +1,6 @@
 <?php
 
-namespace GK\HtmlCrawlerBundle;
+namespace GK\HtmlMetaCrawlerBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 

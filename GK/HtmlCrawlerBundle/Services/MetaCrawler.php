@@ -1,8 +1,6 @@
 <?php
 
-namespace GK\HtmlCrawlerBundle\Services;
-
-use Symfony\Component\Config\Definition\Exception\Exception;
+namespace GK\HtmlMetaCrawlerBundle\Services;
 
 /**
  * Class MetaCrawler

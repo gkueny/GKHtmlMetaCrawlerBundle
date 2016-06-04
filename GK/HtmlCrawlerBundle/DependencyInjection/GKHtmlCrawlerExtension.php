@@ -1,6 +1,6 @@
 <?php
 
-namespace GK\HtmlCrawlerBundle\DependencyInjection;
+namespace GK\HtmlMetaCrawlerBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
