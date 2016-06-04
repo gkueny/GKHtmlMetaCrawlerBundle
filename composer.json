@@ -1,5 +1,5 @@
 {
-  "name" : "gk/html-crawler-bundle",
+  "name" : "gk/html-meta-crawler-bundle",
   "description" : "A simple bundle to get meta tag from url",
   "type" : "symfony-bundle",
   "authors" : [{
