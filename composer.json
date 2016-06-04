@@ -19,7 +19,7 @@
       "GK\\HtmlCrawlerBundle" : ""
     }
   },
-  "target-dir" : "GK/HtmlCrawlerBundle",
+  "target-dir" : "GK/HtmlMetaCrawlerBundle",
   "repositories" : [{
   }],
   "extra" : {
