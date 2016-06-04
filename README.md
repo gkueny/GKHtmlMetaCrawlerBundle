@@ -42,3 +42,88 @@ class AppKernel extends Kernel
     // ...
 }
 ```
+
+Step 2: Controller Example
+-------------------------
+
+```php
+
+<?php
+
+namespace GK\HtmlCrawlerBundle\Controller;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
+
+/**
+ * Class DefaultController
+ *
+ * @package GK\HtmlCrawlerBundle\Controller
+ */
+class DefaultController extends Controller
+{
+    /**
+     * @Route("/", name="crawler_homepage")
+     *
+     * @return Response
+     */
+    public function indexAction()
+    {
+
+        $url = 'http://gkueny.fr';
+
+        $myMetasFb = $this->get("gk_html_crawler.meta")->getMetaFacebook($url);
+
+        $myMetasTw = $this->get("gk_html_crawler.meta")->getMetaTwitter($url);
+
+        $myMetasBasic = $this->get("gk_html_crawler.meta")->getBasicMeta($url);
+
+        $myMetasAll = $this->get("gk_html_crawler.meta")->getAllMeta($url);
+
+        if(!$myMetasFb || !$myMetasTw || !$myMetasBasic || !$myMetasAll ) {
+            echo "error";
+            exit;
+        }
+
+        echo "<p> Facebook : <br/>";
+
+        foreach ($myMetasFb as $myMeta ) {
+            echo $myMeta['property'] . " = " . $myMeta['content'] . '<br/>';
+        }
+
+        echo "</p>";
+
+
+        echo "<p> Twitter : <br/>";
+
+        foreach ($myMetasTw as $myMeta ) {
+            echo $myMeta['name'] . " = " . $myMeta['content'] . '<br/>';
+        }
+
+        echo "</p>";
+
+
+        echo "<p> Basic : <br/>";
+
+        foreach ($myMetasBasic as $myMeta ) {
+            print_r($myMeta);
+            echo "<br/>";
+        }
+
+        echo "</p>";
+
+        echo "<p> All : <br/>";
+
+        foreach ($myMetasAll as $myMeta ) {
+            print_r($myMeta);
+            echo "<br/>";
+        }
+
+        echo "</p>";
+
+        exit;
+
+    }
+}
+```
