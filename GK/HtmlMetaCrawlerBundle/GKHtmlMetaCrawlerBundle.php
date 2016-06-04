@@ -4,6 +4,6 @@ namespace GK\HtmlMetaCrawlerBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class GKHtmlCrawlerBundle extends Bundle
+class GKHtmlMetaCrawlerBundle extends Bundle
 {
 }
