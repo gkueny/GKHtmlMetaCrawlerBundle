@@ -15,11 +15,8 @@
   "require" : {
   },
   "autoload" : {
-    "psr-0" : {
-      "GK\\HtmlCrawlerBundle" : ""
+    "psr-4" : {
+      "GK\\HtmlCrawlerBundle" : "src"
     }
-  },
-  "target-dir" : "./",
-  "repositories" : [{
-  }]
+  }
 }
