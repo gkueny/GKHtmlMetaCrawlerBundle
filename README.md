@@ -33,7 +33,7 @@ class AppKernel extends Kernel
         $bundles = array(
             // ...
 
-            new GK\HtmlCrawlerBundle\GKHtmlCrawlerBundle(),
+            new GK\HtmlMetaCrawlerBundle\GKHtmlMetaCrawlerBundle(),
         );
 
         // ...
