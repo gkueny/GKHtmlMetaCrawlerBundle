@@ -8,7 +8,7 @@ Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
 
 ```bash
-$ composer require gkueny/html-meta-crawler-bundle "~1"
+$ composer require gkueny/html-meta-crawler-bundle "~O.1"
 ```
 
 This command requires you to have Composer installed globally, as explained
@@ -73,13 +73,13 @@ class DefaultController extends Controller
 
         $url = 'http://gkueny.fr';
 
-        $myMetasFb = $this->get("gk_html_crawler.meta")->getMetaFacebook($url);
+        $myMetasFb = $this->get("gk.html_meta_crawler")->getMetaFacebook($url);
 
-        $myMetasTw = $this->get("gk_html_crawler.meta")->getMetaTwitter($url);
+        $myMetasTw = $this->get("gk.html_meta_crawler")->getMetaTwitter($url);
 
-        $myMetasBasic = $this->get("gk_html_crawler.meta")->getBasicMeta($url);
+        $myMetasBasic = $this->get("gk.html_meta_crawler")->getBasicMeta($url);
 
-        $myMetasAll = $this->get("gk_html_crawler.meta")->getAllMeta($url);
+        $myMetasAll = $this->get("gk.html_meta_crawler")->getAllMeta($url);
 
         if(!$myMetasFb || !$myMetasTw || !$myMetasBasic || !$myMetasAll ) {
             echo "error";
