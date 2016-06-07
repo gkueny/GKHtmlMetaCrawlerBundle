@@ -43,7 +43,7 @@ class AppKernel extends Kernel
 }
 ```
 
-Step 2: Controller Example
+Controller Example
 -------------------------
 
 ```php
