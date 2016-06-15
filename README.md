@@ -73,59 +73,63 @@ class DefaultController extends Controller
     public function indexAction()
     {
 
-        $url = 'http://gkueny.fr';
-
-        $myMetasFb = $this->get("gk.html_meta_crawler")->getMetaFacebook($url);
-
-        $myMetasTw = $this->get("gk.html_meta_crawler")->getMetaTwitter($url);
-
-        $myMetasBasic = $this->get("gk.html_meta_crawler")->getBasicMeta($url);
-
-        $myMetasAll = $this->get("gk.html_meta_crawler")->getAllMeta($url);
-
-        if(!$myMetasFb || !$myMetasTw || !$myMetasBasic || !$myMetasAll ) {
-            echo "error";
+        $url = 'http://gkeny.fr';
+        
+        try {
+            $myMetasFb = $this->get("gk.html_meta_crawler")->getMetaFacebook($url);
+        
+            $myMetasTw = $this->get("gk.html_meta_crawler")->getMetaTwitter($url);
+        
+            $myMetasBasic = $this->get("gk.html_meta_crawler")->getBasicMeta($url);
+        
+            $myMetasAll = $this->get("gk.html_meta_crawler")->getAllMeta($url);
+        
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        
             exit;
         }
-
+        
+        
         echo "<p> Facebook : <br/>";
-
+        
         foreach ($myMetasFb as $myMeta ) {
             echo $myMeta['property'] . " = " . $myMeta['content'] . '<br/>';
         }
-
+        
         echo "</p>";
-
-
+        
+        
         echo "<p> Twitter : <br/>";
-
+        
         foreach ($myMetasTw as $myMeta ) {
             echo $myMeta['name'] . " = " . $myMeta['content'] . '<br/>';
         }
-
+        
         echo "</p>";
-
-
+        
+        
         echo "<p> Basic : <br/>";
-
+        
         foreach ($myMetasBasic as $myMeta ) {
             print_r($myMeta);
             echo "<br/>";
         }
-
+        
         echo "</p>";
-
+        
         echo "<p> All : <br/>";
-
+        
         foreach ($myMetasAll as $myMeta ) {
             print_r($myMeta);
             echo "<br/>";
         }
-
+        
         echo "</p>";
-
+        
         exit;
-
+        
+            
     }
 }
 ```
