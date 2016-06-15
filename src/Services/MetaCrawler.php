@@ -130,7 +130,7 @@ class MetaCrawler
         //disable html5 error
         libxml_use_internal_errors(true);
 
-        $webPage = $this->get_web_page($url, $followRedirect);
+        $webPage = $this->getWebPage($url, $followRedirect);
 
         $page = $webPage["content"] ;
 
@@ -158,7 +158,7 @@ class MetaCrawler
      *
      * @return mixed
      */
-    private function get_web_page( $url , $followRedirect)
+    private function getWebPage( $url , $followRedirect)
     {
         $user_agent='Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0';
 
