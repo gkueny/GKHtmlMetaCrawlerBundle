@@ -1,3 +1,5 @@
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/131bf750-6742-4baf-b5bb-1b4ba74e0622/big.png)](https://insight.sensiolabs.com/projects/131bf750-6742-4baf-b5bb-1b4ba74e0622)
+
 Installation
 ============
 
@@ -8,7 +10,7 @@ Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
 
 ```bash
-$ composer require gkueny/html-meta-crawler-bundle "~O.1"
+$ composer require gkueny/html-meta-crawler-bundle
 ```
 
 This command requires you to have Composer installed globally, as explained
