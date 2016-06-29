@@ -3,6 +3,16 @@
 Installation
 ============
 
+New
+---------------------------
+
+### June 29 2016 : 
+
+Add getOpenGraph function 
+
+I try to imitate facebook crawler
+    
+
 Step 1: Download the Bundle
 ---------------------------
 
