@@ -1,6 +1,7 @@
 <?php
 
 namespace GK\HtmlMetaCrawlerBundle\Services;
+
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
@@ -11,9 +12,16 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class MetaCrawler
 {
 
+    /**
+     * get all meta
+     *
+     * @param      $url
+     * @param bool $followRedirect
+     *
+     * @return array|bool|string
+     */
     public function getAllMeta($url, $followRedirect = false)
     {
-
 
 
         $response = $this->getBasicMeta($url, $followRedirect);
@@ -119,10 +127,139 @@ class MetaCrawler
     }
 
     /**
+     * get meta url, type, tile, description, image which faceboo get from website
+     * return null for one of this meta if crawler find nothing about it
+     *
+     * @param string $url
+     * @param bool   $followRedirect
+     *
+     * @return array|bool
+     */
+    public function getOpenGraph($url, $followRedirect = true)
+    {
+        $xml = $this->getDocument($url, $followRedirect);
+
+
+        if (!$xml) return false;
+
+        $metas = $xml->xpath('//meta');
+
+
+
+        $url_meta          = null;
+        $type_meta         = "website";
+        $title_meta        = null;
+        $description_meta  = null;
+        $image_meta        = null;
+        $image_width_meta  = null;
+        $image_height_meta = null;
+
+        $other_description_meta = null;
+        $other_title_meta       = null;
+
+        foreach ($metas as $meta) {
+
+            if (isset($meta['property'])) {
+
+                switch ($meta['property']) {
+
+
+                    case "og:url":
+                        if(!$url_meta)
+                            $url_meta = (string)$meta['content'];
+                        break;
+                    case "og:type":
+                        if(!$type_meta)
+                            $type_meta = (string)$meta['content'];
+                        break;
+                    case "og:title":
+                        if(!$title_meta)
+                            $title_meta = (string)$meta['content'];
+                        break;
+                    case "og:description":
+                        if(!$description_meta)
+                            $description_meta = (string)$meta['content'];
+                        break;
+                    case "og:image":
+                        if(!$image_meta)
+                            $image_meta = (string)$meta['content'];
+                        break;
+                    case "og:image:width":
+                        if(!$image_width_meta)
+                            $image_width_meta = (integer)$meta['content'];
+                        break;
+                    case "og:image:height":
+                        if(!$image_height_meta)
+                            $image_height_meta = (integer)$meta['content'];
+                        break;
+                    default :
+                        break;
+                }
+            } else if (isset($meta['name'])) {
+                switch ($meta['name']) {
+                    case "description":
+                        $other_description_meta = $meta['content'];
+                        break;
+                    default :
+                        break;
+                }
+            }
+        }
+
+        $other_title_meta = $xml->xpath('//title')[0];
+
+        if ($image_meta) {
+            if (strpos($image_meta, "http") === false) {
+                $image_meta = "http:" . $image_meta;
+            }
+        }
+
+        if (is_null($url_meta)) {
+            $url_meta = $url;
+        }
+        if (is_null($title_meta)) {
+
+            $title_meta = (string)$other_title_meta[0];
+        }
+        if (is_null($description_meta)) {
+            $description_meta = (string)$other_description_meta[0];
+        }
+
+
+        if (!$image_height_meta && $image_meta) {
+            $image_height_meta = getimagesize($image_meta)[1];
+        }
+        if (!$image_width_meta && $image_meta) {
+            $image_width_meta = getimagesize($image_meta)[0];
+        }
+        if (!$image_height_meta) {
+            $image_height_meta = 205;
+        }
+        if (!$image_width_meta) {
+            $image_width_meta = 205;
+        }
+
+
+
+        $response = [
+            "og:url"          => $url_meta,
+            "og:type"         => $type_meta,
+            "og:title"        => $title_meta,
+            "og:description"  => $description_meta,
+            "og:image"        => $image_meta,
+            "og:image:width"  => $image_width_meta,
+            "og:image:height" => $image_height_meta
+        ];
+
+        return $response;
+    }
+    
+    /**
      * @param $url
+     * @param $followRedirect
      *
      * @return \SimpleXMLElement
-     * @throws \Exception
+     * @throws Exception
      */
     private function getDocument($url, $followRedirect)
     {
@@ -132,10 +269,10 @@ class MetaCrawler
 
         $webPage = $this->getWebPage($url, $followRedirect);
 
-        $page = $webPage["content"] ;
+        $page = $webPage["content"];
 
         if (!$page) {
-            throw new Exception( $webPage['errno'] . " : " . $webPage['errmsg']);
+            throw new Exception($webPage['errno']." : ".$webPage['errmsg']);
         }
 
         //create simplexml object
@@ -158,38 +295,40 @@ class MetaCrawler
      *
      * @return mixed
      */
-    private function getWebPage( $url , $followRedirect)
+    private function getWebPage($url, $followRedirect)
     {
-        $user_agent='Mozilla/5.0 (Windows NT 6.1; rv:8.0) Gecko/20100101 Firefox/8.0';
 
         $options = array(
-            CURLOPT_CUSTOMREQUEST  =>"GET",             //set request type post or get
-            CURLOPT_POST           =>false,             //set to GET
-            CURLOPT_USERAGENT      => $user_agent,      //set user agent
-            CURLOPT_COOKIEFILE     =>"cookie.txt",      //set cookie file
-            CURLOPT_COOKIEJAR      =>"cookie.txt",      //set cookie jar
-            CURLOPT_RETURNTRANSFER => true,             // return web page
-            CURLOPT_HEADER         => false,            // don't return headers
-            CURLOPT_FOLLOWLOCATION => $followRedirect,  // follow redirects
-            CURLOPT_ENCODING       => "",               // handle all encodings
-            CURLOPT_AUTOREFERER    => true,             // set referer on redirect
-            CURLOPT_CONNECTTIMEOUT => 120,              // timeout on connect
-            CURLOPT_TIMEOUT        => 120,              // timeout on response
-            CURLOPT_MAXREDIRS      => 10,               // stop after 10 redirects
+            CURLOPT_URL            => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            // return web page
+            CURLOPT_HEADER         => true,
+            // don't return headers
+            CURLOPT_FOLLOWLOCATION => $followRedirect,
+            // follow redirects
+            CURLOPT_ENCODING       => "",
+            // handle all encodings
+            CURLOPT_AUTOREFERER    => true,
+            // set referer on redirect
+            CURLOPT_CONNECTTIMEOUT => 120,
+            // timeout on connect
+            CURLOPT_TIMEOUT        => 120,
+            // timeout on response
+            CURLOPT_MAXREDIRS      => 10,
+            // stop after 10 redirects
         );
 
-        $ch      = curl_init( $url );
-        curl_setopt_array( $ch, $options );
-        $content = curl_exec( $ch );
-        $err     = curl_errno( $ch );
-        $errmsg  = curl_error( $ch );
-        $header  = curl_getinfo( $ch );
-        curl_close( $ch );
+        $ch = curl_init();
+        curl_setopt_array($ch, $options);
+        $response["content"] = curl_exec($ch);
+        $httpCode            = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-        $header['errno']   = $err;
-        $header['errmsg']  = $errmsg;
-        $header['content'] = $content;
+        $response['errno']  = $httpCode;
+        $response['errmsg'] = null;
+        if ($httpCode != 200) {
+            $response['errmsg'] = curl_error($ch);
+        }
 
-        return $header;
+        return $response;
     }
 }
